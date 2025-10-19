@@ -2,11 +2,11 @@ import qrcode
 
 # List of data (URLs) for each QR code - replace with your real URLs later
 qr_data = [
-    'https://example.com/1',      # QR1: Intro
-    'https://example.com/2',   # QR2: Benefits
-    'https://example.com/3',       # QR3: Tech
-    'https://example.com/4', # QR4: Challenges
-    'https://example.com/5'      # QR5: Future
+    'https://prajwalmangaji.github.io/pamphlets/1.html',      # QR1: Intro
+    'https://prajwalmangaji.github.io/pamphlets/2.html',   # QR2: Benefits
+    'https://prajwalmangaji.github.io/pamphlets/3.html',       # QR3: Tech
+    'https://prajwalmangaji.github.io/pamphlets/4.html', # QR4: Challenges
+    'https://prajwalmangaji.github.io/pamphlets/5.html'      # QR5: Future
 ]
 
 # Generate each QR code
