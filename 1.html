@@ -1,297 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Class: [Topic Title]</title> <!-- Replace [Topic Title] with e.g., Introduction -->
-    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+    <title>Image Gravity Animation</title>
+
     <style>
-        #video-intro-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
+        body {
+            margin: 0;
+            padding: 0;
             height: 100vh;
-            background: #000;
-            z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #ffffff;
             overflow: hidden;
         }
 
-        #intro-video {
-            display: none;
+        .container {
+            position: relative;
+            height: 80vh;
             max-width: 90vw;
-            max-height: 90vh;
-            object-fit: contain;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        #pixel-canvas {
+
+        .image {
+            height: 100%;
+            width: auto;
+            display: block;
+        }
+
+        .piece {
             position: absolute;
-            top: 50%;
+            height: 100%;
+            width: auto;
             left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
+            transform-origin: center;
+            will-change: transform;
         }
 
-        .main-content {
-            opacity: 0;
-            transition: opacity 1.5s ease-in;
+
+
+        .piece1 {
+            clip-path: url(#clip1);
         }
 
-        .main-content.visible {
-            opacity: 1;
+        .piece2 {
+            clip-path: url(#clip2);
+        }
+
+        .piece3 {
+            clip-path: url(#clip3);
+        }
+
+        .piece4 {
+            clip-path: url(#clip4);
+        }
+
+        .piece1 {
+            transform: translate(-50%, -50%) translate(-60px, -40px) rotate(-8deg);
+        }
+
+        .piece2 {
+            transform: translate(-50%, -50%) translate(60px, -50px) rotate(6deg);
+        }
+
+        .piece3 {
+            transform: translate(-50%, -50%) translate(50px, 60px) rotate(-5deg);
+        }
+
+        .piece4 {
+            transform: translate(-50%, -50%) translate(-60px, 50px) rotate(10deg);
+        }
+
+
+        .piece {
+            will-change: transform;
         }
     </style>
 </head>
+
 <body>
-    <!-- Video Intro Container -->
-    <div id="video-intro-container">
-        <video id="intro-video" muted playsinline>
-            <source src="tools/WhatsApp Video 2026-01-03 at 3.56.12 PM.mp4" type="video/mp4">
-        </video>
-        <canvas id="pixel-canvas"></canvas>
+
+    <div class="container">
+
+        <img src="tools/1.png" class="piece piece1">
+        <img src="tools/1.png" class="piece piece2">
+        <img src="tools/1.png" class="piece piece3">
+        <img src="tools/1.png" class="piece piece4">
+
     </div>
+    <!-- SVG masks (invisible, used only for clipping) -->
+    <!-- SVG masks (invisible, used only for clipping) -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
 
-    <div class="container main-content">
-        <h1>Smart Class: [1]</h1> <!-- Same as title -->
+            <clipPath id="clip1" clipPathUnits="objectBoundingBox">
+                <path d="M0 0 L0.6 0 L0.45 1 L0 1 Z" />
+            </clipPath>
 
-        <!-- Custom Content Starts Here -->
-        <p>[Intro paragraph: Add your text here. E.g., A smart class is an educational environment that integrates technology to enhance teaching and learning.]</p>
+            <clipPath id="clip2" clipPathUnits="objectBoundingBox">
+                <path d="M0.6 0 L1 0 L1 0.45 L0.45 1 Z" />
+            </clipPath>
 
-        <h2>Key Points</h2>
-        <ul>
-            <li>[Point 1: E.g., Interactive whiteboards for real-time collaboration.]</li>
-            <li>[Point 2: E.g., Digital resources accessible via devices.]</li>
-            <li>[Point 3: Add more as needed.]</li>
-        </ul>
+            <clipPath id="clip3" clipPathUnits="objectBoundingBox">
+                <path d="M0 1 L0.45 0.55 L1 0.55 L1 1 Z" />
+            </clipPath>
 
-        <!-- Optional: Add an image (host image online first, e.g., on imgur.com, and paste URL) -->
-        <img src="[Image URL, e.g., https://example.com/smart-class-image.jpg]" alt="Smart Class Illustration">
+            <clipPath id="clip4" clipPathUnits="objectBoundingBox">
+                <path d="M0 0 L0.45 0.45 L0 1 Z" />
+            </clipPath>
 
-        <!-- Add more sections if needed, e.g., <h2>Subtopic</h2> <p>Details...</p> -->
-        <!-- Custom Content Ends Here -->
+        </defs>
+    </svg>
 
-        <footer>Presented by [Your Name] | [Date]</footer>
-    </div>
 
     <script>
-        const videoContainer = document.getElementById('video-intro-container');
-        const video = document.getElementById('intro-video');
-        const canvas = document.getElementById('pixel-canvas');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        const mainContent = document.querySelector('.main-content');
-
-        let videoLoaded = false;
-        let pixelSize = 10;
-        let revealProgress = 0;
-        let hideProgress = 0;
-        let animationState = 'revealing'; // revealing, playing, paused, waiting, hiding, done
-        let waitStartTime = 0;
-        let hasResumed = false;
-
-        // Load video metadata
-        video.addEventListener('loadedmetadata', () => {
-            const aspectRatio = video.videoWidth / video.videoHeight;
-            const maxWidth = window.innerWidth * 0.9;
-            const maxHeight = window.innerHeight * 0.9;
-            
-            let displayWidth = maxWidth;
-            let displayHeight = maxWidth / aspectRatio;
-            
-            if (displayHeight > maxHeight) {
-                displayHeight = maxHeight;
-                displayWidth = maxHeight * aspectRatio;
-            }
-            
-            canvas.width = displayWidth;
-            canvas.height = displayHeight;
-            video.style.width = displayWidth + 'px';
-            video.style.height = displayHeight + 'px';
-            
-            videoLoaded = true;
+        // Initial off-screen positions
+        gsap.set(".piece1", {
+            x: "-150vw",
+            y: "-100vh",
+            rotation: -20
         });
 
-        // Wait for first frame to load, then start reveal animation
-        video.addEventListener('loadeddata', () => {
-            // Seek to first frame and pause
-            video.currentTime = 0;
-            requestAnimationFrame(animate);
+        gsap.set(".piece2", {
+            x: "150vw",
+            y: "-120vh",
+            rotation: 15
         });
 
-        // Pixel glitter reveal effect
-        function drawPixelReveal() {
-            if (!videoLoaded) return;
-            
-            // Start with black background
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Create temporary canvas for video frame
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = canvas.width;
-            tempCanvas.height = canvas.height;
-            const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
-            
-            // Draw current video frame (even if paused)
-            tempCtx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            const revealHeight = canvas.height * revealProgress;
-            
-            // Draw pixels with glitter effect
-            for (let y = 0; y < canvas.height; y += pixelSize) {
-                for (let x = 0; x < canvas.width; x += pixelSize) {
-                    const pixelY = y + pixelSize / 2;
-                    
-                    if (pixelY <= revealHeight) {
-                        // Add randomness for glitter effect
-                        const glitterOffset = Math.random() * 2;
-                        const alpha = 0.8 + Math.random() * 0.2;
-                        
-                        const imageData = tempCtx.getImageData(x, y, pixelSize, pixelSize);
-                        const avgColor = getAverageColor(imageData);
-                        
-                        ctx.globalAlpha = alpha;
-                        ctx.fillStyle = `rgb(${avgColor.r}, ${avgColor.g}, ${avgColor.b})`;
-                        ctx.fillRect(
-                            x + Math.random() * glitterOffset, 
-                            y + Math.random() * glitterOffset, 
-                            pixelSize - glitterOffset, 
-                            pixelSize - glitterOffset
-                        );
-                        ctx.globalAlpha = 1;
-                    }
-                }
-            }
-        }
-
-        // Pixel glitter hide effect (reverse)
-        function drawPixelHide() {
-            if (!videoLoaded) return;
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Create temporary canvas for video frame
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = canvas.width;
-            tempCanvas.height = canvas.height;
-            const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
-            tempCtx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            const hideHeight = canvas.height * (1 - hideProgress);
-            
-            // Draw pixels with glitter effect (hiding from bottom to top)
-            for (let y = 0; y < canvas.height; y += pixelSize) {
-                for (let x = 0; x < canvas.width; x += pixelSize) {
-                    const pixelY = y + pixelSize / 2;
-                    
-                    if (pixelY <= hideHeight) {
-                        const glitterOffset = Math.random() * 2;
-                        const alpha = 0.8 + Math.random() * 0.2;
-                        
-                        const imageData = tempCtx.getImageData(x, y, pixelSize, pixelSize);
-                        const avgColor = getAverageColor(imageData);
-                        
-                        ctx.globalAlpha = alpha;
-                        ctx.fillStyle = `rgb(${avgColor.r}, ${avgColor.g}, ${avgColor.b})`;
-                        ctx.fillRect(
-                            x + Math.random() * glitterOffset, 
-                            y + Math.random() * glitterOffset, 
-                            pixelSize - glitterOffset, 
-                            pixelSize - glitterOffset
-                        );
-                        ctx.globalAlpha = 1;
-                    }
-                }
-            }
-            
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, hideHeight, canvas.width, canvas.height - hideHeight);
-        }
-
-        function getAverageColor(imageData) {
-            let r = 0, g = 0, b = 0;
-            const pixels = imageData.data.length / 4;
-            
-            for (let i = 0; i < imageData.data.length; i += 4) {
-                r += imageData.data[i];
-                g += imageData.data[i + 1];
-                b += imageData.data[i + 2];
-            }
-            
-            return {
-                r: Math.floor(r / pixels),
-                g: Math.floor(g / pixels),
-                b: Math.floor(b / pixels)
-            };
-        }
-
-        function animate() {
-            if (animationState === 'revealing') {
-                revealProgress += 0.008; // Slower reveal speed
-                drawPixelReveal();
-                
-                if (revealProgress >= 1) {
-                    revealProgress = 1;
-                    animationState = 'playing';
-                    // Start playing video after reveal is complete
-                    video.play();
-                }
-                requestAnimationFrame(animate);
-            } 
-            else if (animationState === 'playing') {
-                // Keep drawing video while it plays
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                // Pause at 3 seconds
-                if (video.currentTime >= 3 && !hasResumed) {
-                    video.pause();
-                    animationState = 'paused';
-                    waitStartTime = Date.now();
-                }
-                
-                // Check if video has ended (after resume)
-                if (video.ended || (hasResumed && video.currentTime >= video.duration - 0.1)) {
-                    animationState = 'hiding';
-                }
-                requestAnimationFrame(animate);
-            }
-            else if (animationState === 'paused') {
-                // Keep showing paused frame for 5 seconds
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                const elapsedTime = Date.now() - waitStartTime;
-                if (elapsedTime >= 3000) {
-                    hasResumed = true;
-                    video.play();
-                    animationState = 'playing';
-                }
-                requestAnimationFrame(animate);
-            }
-            else if (animationState === 'hiding') {
-                hideProgress += 0.01; // Slower hide speed
-                drawPixelHide();
-                
-                if (hideProgress >= 1) {
-                    animationState = 'done';
-                    videoContainer.style.display = 'none';
-                    mainContent.classList.add('visible');
-                } else {
-                    requestAnimationFrame(animate);
-                }
-            }
-        }
-
-        // Handle video end
-        video.addEventListener('ended', () => {
-            if (animationState === 'playing' && hasResumed) {
-                animationState = 'hiding';
-                requestAnimationFrame(animate);
-            }
+        gsap.set(".piece3", {
+            x: "120vw",
+            y: "120vh",
+            rotation: -15
         });
 
-        // Start loading video
-        video.load();
+        gsap.set(".piece4", {
+            x: "-120vw",
+            y: "130vh",
+            rotation: 20
+        });
+
+        // Smooth, sequential gravity pull
+        const tl = gsap.timeline({ delay: 0.6 });
+
+        tl.to(".piece1", {
+            x: "-50%",
+            y: "-50%",
+            rotation: 0,
+            duration: 2.2,
+            ease: "power2.out"
+        })
+
+            .to(".piece2", {
+                x: "-50%",
+                y: "-50%",
+                rotation: 0,
+                duration: 1.4,
+                ease: "power2.out"
+            }, "-=0.9")
+
+            .to(".piece3", {
+                x: "-50%",
+                y: "-50%",
+                rotation: 0,
+                duration: 1.4,
+                ease: "power2.out"
+            }, "-=0.9")
+
+            .to(".piece4", {
+                x: "-50%",
+                y: "-50%",
+                rotation: 0,
+                duration: 1.4,
+                ease: "power2.out"
+            }, "-=0.9");
     </script>
+
+
+
+
 </body>
+
 </html>

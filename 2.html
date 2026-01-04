@@ -1,45 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Class: [Topic Title]</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+    <title>Image Gravity Animation</title>
+
     <style>
         body {
             margin: 0;
             padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
         }
+
         .container {
-            margin: 0;
-            padding: 0;
-            box-shadow: none;
-            background: transparent;
+            position: relative;
+            height: 80vh;
+            max-width: 90vw;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            width: 100vw;
         }
-        .container img {
-            max-height: 100vh;
-            max-width: 100vw;
+
+
+        .image {
+            height: 100%;
             width: auto;
-            height: auto;
             display: block;
-            object-fit: contain;
+        }
+
+        .piece {
+            position: absolute;
+            height: 100%;
+            width: auto;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transform-origin: center;
+            will-change: transform;
+        }
+
+
+
+        .piece1 {
+            clip-path: url(#clip1);
+        }
+
+        .piece2 {
+            clip-path: url(#clip2);
+        }
+
+        .piece3 {
+            clip-path: url(#clip3);
+        }
+
+        .piece4 {
+            clip-path: url(#clip4);
+        }
+
+        .piece1 {
+            transform: translate(-50%, -50%) translate(-60px, -40px) rotate(-8deg);
+        }
+
+        .piece2 {
+            transform: translate(-50%, -50%) translate(60px, -50px) rotate(6deg);
+        }
+
+        .piece3 {
+            transform: translate(-50%, -50%) translate(50px, 60px) rotate(-5deg);
+        }
+
+        .piece4 {
+            transform: translate(-50%, -50%) translate(-60px, 50px) rotate(10deg);
+        }
+
+
+        .piece {
+            will-change: transform;
         }
     </style>
 </head>
+
 <body>
+
     <div class="container">
-        <img src="tools/Adaptive Learning.png" alt="Adaptive Learning">
+
+        <img src="tools/2.png" class="piece piece1">
+        <img src="tools/2.png" class="piece piece2">
+        <img src="tools/2.png" class="piece piece3">
+        <img src="tools/2.png" class="piece piece4">
+
     </div>
+    <!-- SVG masks (invisible, used only for clipping) -->
+    <!-- SVG masks (invisible, used only for clipping) -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+
+            <clipPath id="clip1" clipPathUnits="objectBoundingBox">
+                <path d="M0 0 L0.6 0 L0.45 1 L0 1 Z" />
+            </clipPath>
+
+            <clipPath id="clip2" clipPathUnits="objectBoundingBox">
+                <path d="M0.6 0 L1 0 L1 0.45 L0.45 1 Z" />
+            </clipPath>
+
+            <clipPath id="clip3" clipPathUnits="objectBoundingBox">
+                <path d="M0 1 L0.45 0.55 L1 0.55 L1 1 Z" />
+            </clipPath>
+
+            <clipPath id="clip4" clipPathUnits="objectBoundingBox">
+                <path d="M0 0 L0.45 0.45 L0 1 Z" />
+            </clipPath>
+
+        </defs>
+    </svg>
+
+
+    <script>
+        // Initial off-screen positions
+        gsap.set(".piece1", {
+            x: "-150vw",
+            y: "-100vh",
+            rotation: -20
+        });
+
+        gsap.set(".piece2", {
+            x: "150vw",
+            y: "-120vh",
+            rotation: 15
+        });
+
+        gsap.set(".piece3", {
+            x: "120vw",
+            y: "120vh",
+            rotation: -15
+        });
+
+        gsap.set(".piece4", {
+            x: "-120vw",
+            y: "130vh",
+            rotation: 20
+        });
+
+        // Smooth, sequential gravity pull
+        const tl = gsap.timeline({ delay: 0.6 });
+
+        tl.to(".piece1", {
+            x: "-50%",
+            y: "-50%",
+            rotation: 0,
+            duration: 2.2,
+            ease: "power2.out"
+        })
+
+            .to(".piece2", {
+                x: "-50%",
+                y: "-50%",
+                rotation: 0,
+                duration: 1.4,
+                ease: "power2.out"
+            }, "-=0.9")
+
+            .to(".piece3", {
+                x: "-50%",
+                y: "-50%",
+                rotation: 0,
+                duration: 1.4,
+                ease: "power2.out"
+            }, "-=0.9")
+
+            .to(".piece4", {
+                x: "-50%",
+                y: "-50%",
+                rotation: 0,
+                duration: 1.4,
+                ease: "power2.out"
+            }, "-=0.9");
+    </script>
+
+
+
+
 </body>
+
 </html>
