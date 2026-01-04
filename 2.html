@@ -14,21 +14,21 @@
     <title>Image Gravity Animation</title>
 
     <style>
+        html,
         body {
+            width: 100%;
+            height: 100%;
             margin: 0;
             padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #ffffff;
             overflow: hidden;
+            overscroll-behavior: none;
+            touch-action: none;
         }
 
+
         .container {
-            position: relative;
-            height: 80vh;
-            max-width: 90vw;
+            position: fixed;
+            inset: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -43,7 +43,8 @@
 
         .piece {
             position: absolute;
-            height: 100%;
+            height: 90vh;
+            max-width: 90vw;
             width: auto;
             left: 50%;
             top: 50%;
@@ -51,6 +52,7 @@
             transform-origin: center;
             will-change: transform;
         }
+
 
 
 
