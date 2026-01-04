@@ -32,15 +32,24 @@
             align-items: center;
         }
 
-        /* FINAL STATE ONLY */
         .piece {
             position: absolute;
-            height: 80vh;
+
+            max-height: 80vh;
             max-width: 90vw;
+            height: auto;
+            width: auto;
+
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
+
+            object-fit: contain;
+
+            transform-origin: center;
+            will-change: transform, opacity;
         }
+
 
 
         .piece1 {
