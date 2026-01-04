@@ -16,15 +16,13 @@
     <style>
         html,
         body {
-            width: 100%;
-            height: 100%;
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            overscroll-behavior: none;
-            touch-action: none;
+            background: white;
         }
-
 
         .container {
             position: fixed;
@@ -34,27 +32,20 @@
             align-items: center;
         }
 
-
-        .image {
-            height: 100%;
-            width: auto;
-            display: block;
-        }
-
+        /* FINAL STATE ONLY */
         .piece {
             position: absolute;
-            height: 90vh;
+            height: 80vh;
             max-width: 90vw;
             width: auto;
+
             left: 50%;
-            top: 50%;
+            top: 10%;
             transform: translate(-50%, -50%);
+
             transform-origin: center;
-            will-change: transform;
+            will-change: transform, opacity;
         }
-
-
-
 
         .piece1 {
             clip-path: url(#clip1);
@@ -70,27 +61,6 @@
 
         .piece4 {
             clip-path: url(#clip4);
-        }
-
-        .piece1 {
-            transform: translate(-50%, -50%) translate(-60px, -40px) rotate(-8deg);
-        }
-
-        .piece2 {
-            transform: translate(-50%, -50%) translate(60px, -50px) rotate(6deg);
-        }
-
-        .piece3 {
-            transform: translate(-50%, -50%) translate(50px, 60px) rotate(-5deg);
-        }
-
-        .piece4 {
-            transform: translate(-50%, -50%) translate(-60px, 50px) rotate(10deg);
-        }
-
-
-        .piece {
-            will-change: transform;
         }
     </style>
 </head>
@@ -133,67 +103,48 @@
     <script>
         window.onload = () => {
 
-            gsap.set(".piece1", {
-                x: "-150vw",
-                y: "-100vh",
-                rotation: -20
-            });
+            // Initial invisible scattered state (SAFE for mobile)
+            gsap.set(".piece1", { x: -220, y: -260, rotation: -18, opacity: 0 });
+            gsap.set(".piece2", { x: 220, y: -260, rotation: 14, opacity: 0 });
+            gsap.set(".piece3", { x: 240, y: 240, rotation: -14, opacity: 0 });
+            gsap.set(".piece4", { x: -240, y: 240, rotation: 20, opacity: 0 });
 
-            gsap.set(".piece2", {
-                x: "150vw",
-                y: "-120vh",
-                rotation: 15
-            });
-
-            gsap.set(".piece3", {
-                x: "120vw",
-                y: "120vh",
-                rotation: -15
-            });
-
-            gsap.set(".piece4", {
-                x: "-120vw",
-                y: "130vh",
-                rotation: 20
-            });
-
-            const tl = gsap.timeline({ delay: 0.6 });
+            const tl = gsap.timeline({ delay: 0.8 });
 
             tl.to(".piece1", {
-                x: "-50%",
-                y: "-50%",
+                x: 0,
+                y: 0,
                 rotation: 0,
-                duration: 2.2,
+                opacity: 1,
+                duration: 2.8,
                 ease: "power2.out"
             })
                 .to(".piece2", {
-                    x: "-50%",
-                    y: "-50%",
+                    x: 0,
+                    y: 0,
                     rotation: 0,
-                    duration: 1.4,
+                    opacity: 1,
+                    duration: 2.8,
                     ease: "power2.out"
-                }, "-=0.9")
+                }, "+=0.5")
                 .to(".piece3", {
-                    x: "-50%",
-                    y: "-50%",
+                    x: 0,
+                    y: 0,
                     rotation: 0,
-                    duration: 1.4,
+                    opacity: 1,
+                    duration: 2.8,
                     ease: "power2.out"
-                }, "-=0.9")
+                }, "+=0.5")
                 .to(".piece4", {
-                    x: "-50%",
-                    y: "-50%",
+                    x: 0,
+                    y: 0,
                     rotation: 0,
-                    duration: 1.4,
+                    opacity: 1,
+                    duration: 2.8,
                     ease: "power2.out"
-                }, "-=0.9");
-
+                }, "+=0.5");
         };
     </script>
-
-
-
-
 
 </body>
 
