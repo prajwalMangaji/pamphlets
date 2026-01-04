@@ -124,66 +124,66 @@
 
 
     <script>
-        // Initial off-screen positions
-        gsap.set(".piece1", {
-            x: "-150vw",
-            y: "-100vh",
-            rotation: -20
-        });
+        window.onload = () => {
 
-        gsap.set(".piece2", {
-            x: "150vw",
-            y: "-120vh",
-            rotation: 15
-        });
+            gsap.set(".piece1", {
+                x: "-150vw",
+                y: "-100vh",
+                rotation: -20
+            });
 
-        gsap.set(".piece3", {
-            x: "120vw",
-            y: "120vh",
-            rotation: -15
-        });
+            gsap.set(".piece2", {
+                x: "150vw",
+                y: "-120vh",
+                rotation: 15
+            });
 
-        gsap.set(".piece4", {
-            x: "-120vw",
-            y: "130vh",
-            rotation: 20
-        });
+            gsap.set(".piece3", {
+                x: "120vw",
+                y: "120vh",
+                rotation: -15
+            });
 
-        // Smooth, sequential gravity pull
-        const tl = gsap.timeline({ delay: 0.6 });
+            gsap.set(".piece4", {
+                x: "-120vw",
+                y: "130vh",
+                rotation: 20
+            });
 
-        tl.to(".piece1", {
-            x: "-50%",
-            y: "-50%",
-            rotation: 0,
-            duration: 2.2,
-            ease: "power2.out"
-        })
+            const tl = gsap.timeline({ delay: 0.6 });
 
-            .to(".piece2", {
+            tl.to(".piece1", {
                 x: "-50%",
                 y: "-50%",
                 rotation: 0,
-                duration: 1.4,
+                duration: 2.2,
                 ease: "power2.out"
-            }, "-=0.9")
+            })
+                .to(".piece2", {
+                    x: "-50%",
+                    y: "-50%",
+                    rotation: 0,
+                    duration: 1.4,
+                    ease: "power2.out"
+                }, "-=0.9")
+                .to(".piece3", {
+                    x: "-50%",
+                    y: "-50%",
+                    rotation: 0,
+                    duration: 1.4,
+                    ease: "power2.out"
+                }, "-=0.9")
+                .to(".piece4", {
+                    x: "-50%",
+                    y: "-50%",
+                    rotation: 0,
+                    duration: 1.4,
+                    ease: "power2.out"
+                }, "-=0.9");
 
-            .to(".piece3", {
-                x: "-50%",
-                y: "-50%",
-                rotation: 0,
-                duration: 1.4,
-                ease: "power2.out"
-            }, "-=0.9")
-
-            .to(".piece4", {
-                x: "-50%",
-                y: "-50%",
-                rotation: 0,
-                duration: 1.4,
-                ease: "power2.out"
-            }, "-=0.9");
+        };
     </script>
+
 
 
 
