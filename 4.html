@@ -3,48 +3,51 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,
+               height=device-height,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
 
     <title>Image Gravity Animation</title>
 
     <style>
+        html,
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #ffffff;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
+            background: white;
         }
 
         .container {
-            position: relative;
-            height: 80vh;
-            max-width: 90vw;
+            position: fixed;
+            inset: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-
-        .image {
-            height: 100%;
-            width: auto;
-            display: block;
         }
 
         .piece {
             position: absolute;
-            height: 100%;
+
+            max-height: 80vh;
+            max-width: 90vw;
+            height: auto;
             width: auto;
+
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
+
+            object-fit: contain;
+
             transform-origin: center;
-            will-change: transform;
+            will-change: transform, opacity;
         }
 
 
@@ -64,27 +67,6 @@
         .piece4 {
             clip-path: url(#clip4);
         }
-
-        .piece1 {
-            transform: translate(-50%, -50%) translate(-60px, -40px) rotate(-8deg);
-        }
-
-        .piece2 {
-            transform: translate(-50%, -50%) translate(60px, -50px) rotate(6deg);
-        }
-
-        .piece3 {
-            transform: translate(-50%, -50%) translate(50px, 60px) rotate(-5deg);
-        }
-
-        .piece4 {
-            transform: translate(-50%, -50%) translate(-60px, 50px) rotate(10deg);
-        }
-
-
-        .piece {
-            will-change: transform;
-        }
     </style>
 </head>
 
@@ -92,10 +74,10 @@
 
     <div class="container">
 
-        <img src="tools/4.png" class="piece piece1">
-        <img src="tools/4.png" class="piece piece2">
-        <img src="tools/4.png" class="piece piece3">
-        <img src="tools/4.png" class="piece piece4">
+        <img src="./tools/4.png" class="piece piece1">
+        <img src="./tools/4.png" class="piece piece2">
+        <img src="./tools/4.png" class="piece piece3">
+        <img src="./tools/4.png" class="piece piece4">
 
     </div>
     <!-- SVG masks (invisible, used only for clipping) -->
@@ -124,69 +106,51 @@
 
 
     <script>
-        // Initial off-screen positions
-        gsap.set(".piece1", {
-            x: "-150vw",
-            y: "-100vh",
-            rotation: -20
-        });
+        window.onload = () => {
 
-        gsap.set(".piece2", {
-            x: "150vw",
-            y: "-120vh",
-            rotation: 15
-        });
+            gsap.set(".piece1", { x: -220, y: -260, rotation: -18, opacity: 0 });
+            gsap.set(".piece2", { x: 220, y: -260, rotation: 14, opacity: 0 });
+            gsap.set(".piece3", { x: 240, y: 240, rotation: -14, opacity: 0 });
+            gsap.set(".piece4", { x: -240, y: 240, rotation: 20, opacity: 0 });
 
-        gsap.set(".piece3", {
-            x: "120vw",
-            y: "120vh",
-            rotation: -15
-        });
+            const tl = gsap.timeline({ delay: 0.4 });
 
-        gsap.set(".piece4", {
-            x: "-120vw",
-            y: "130vh",
-            rotation: 20
-        });
-
-        // Smooth, sequential gravity pull
-        const tl = gsap.timeline({ delay: 0.6 });
-
-        tl.to(".piece1", {
-            x: "-50%",
-            y: "-50%",
-            rotation: 0,
-            duration: 2.2,
-            ease: "power2.out"
-        })
-
-            .to(".piece2", {
-                x: "-50%",
-                y: "-50%",
+            tl.to(".piece1", {
+                x: 0,
+                y: 0,
                 rotation: 0,
+                opacity: 1,
                 duration: 1.4,
-                ease: "power2.out"
-            }, "-=0.9")
+                ease: "power3.out"
+            })
+                .to(".piece2", {
+                    x: 0,
+                    y: 0,
+                    rotation: 0,
+                    opacity: 1,
+                    duration: 1.4,
+                    ease: "power3.out"
+                }, "-=1.0")   // starts before piece1 finishes
 
-            .to(".piece3", {
-                x: "-50%",
-                y: "-50%",
-                rotation: 0,
-                duration: 1.4,
-                ease: "power2.out"
-            }, "-=0.9")
+                .to(".piece3", {
+                    x: 0,
+                    y: 0,
+                    rotation: 0,
+                    opacity: 1,
+                    duration: 1.4,
+                    ease: "power3.out"
+                }, "-=0.9")
 
-            .to(".piece4", {
-                x: "-50%",
-                y: "-50%",
-                rotation: 0,
-                duration: 1.4,
-                ease: "power2.out"
-            }, "-=0.9");
+                .to(".piece4", {
+                    x: 0,
+                    y: 0,
+                    rotation: 0,
+                    opacity: 1,
+                    duration: 1.4,
+                    ease: "power3.out"
+                }, "-=0.9");
+        };
     </script>
-
-
-
 
 </body>
 
