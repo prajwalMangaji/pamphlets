@@ -9,6 +9,9 @@ qr_data = [
     'https://prajwalmangaji.github.io/pamphlets/5.html'      # QR5: Future
 ]
 
+# Special QR code for all images
+qr_all_url = 'https://prajwalmangaji.github.io/pamphlets/6.html'
+
 # Generate each QR code
 for i, data in enumerate(qr_data, start=1):
     # Create QRCode object with settings
@@ -30,3 +33,18 @@ for i, data in enumerate(qr_data, start=1):
     filename = f"qr_code_{i}.png"
     img.save(filename)
     print(f"Generated: {filename} for data: {data}")
+
+# Generate the special "all" QR code
+qr_all = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_L,
+    box_size=10,
+    border=4
+)
+
+qr_all.add_data(qr_all_url)
+qr_all.make(fit=True)
+
+img_all = qr_all.make_image(fill_color="black", back_color="white")
+img_all.save("qr_code_all.png")
+print(f"Generated: qr_code_all.png for data: {qr_all_url}")
